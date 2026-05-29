@@ -3,26 +3,17 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-// Parseamos la URL manualmente para que las variables PG* del entorno
-// (que Render inyecta) no interfieran con la conexión a Neon.
-function parseDbUrl(url: string) {
-  const u = new URL(url);
-  return {
-    host:     u.hostname,
-    port:     parseInt(u.port || '5432', 10),
-    user:     decodeURIComponent(u.username),
-    password: decodeURIComponent(u.password),
-    database: u.pathname.replace(/^\//, ''),
-    ssl:      u.searchParams.get('sslmode') !== 'disable' ? { rejectUnauthorized: false } : false,
-  };
-}
-
-const dbConfig = process.env.DATABASE_URL
-  ? parseDbUrl(process.env.DATABASE_URL)
-  : { host: 'localhost', port: 5432, database: 'eco_wellness_db' };
+// Render inyecta variables PG* internas que pg usa como fallback
+// y sobreescriben el connectionString de Neon. Las eliminamos.
+delete process.env.PGHOST;
+delete process.env.PGPORT;
+delete process.env.PGUSER;
+delete process.env.PGPASSWORD;
+delete process.env.PGDATABASE;
 
 export const pool = new Pool({
-  ...dbConfig,
+  connectionString: process.env.DATABASE_URL,
+  ssl: { rejectUnauthorized: false },
   max: 20,
   idleTimeoutMillis: 30_000,
   connectionTimeoutMillis: 2_000,
