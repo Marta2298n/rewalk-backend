@@ -32,7 +32,10 @@ app.use((_req, res) => res.status(404).json({ error: 'Not found' }));
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
+  const db = process.env.DATABASE_URL;
+  const dbStatus = db ? `✅ DATABASE_URL set (host: ${db.split('@')[1]?.split('/')[0] ?? '?'})` : '❌ DATABASE_URL NOT SET';
   console.log(`Eco-Wellness API running on port ${PORT}`);
+  console.log(dbStatus);
 });
 
 export default app;
