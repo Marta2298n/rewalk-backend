@@ -7,6 +7,11 @@ API REST en Node.js + TypeScript que da soporte a:
 
 Stack: Express · PostgreSQL · JWT · bcrypt · TypeScript
 
+## URLs
+- **Producción:** `https://rewalk-backend.onrender.com` (Render, free tier)
+- **BD producción:** Neon PostgreSQL (`ep-calm-wave-alpj46bo.c-3.eu-central-1.aws.neon.tech`)
+- **Repos:** `https://github.com/Marta2298n/rewalk-backend`
+
 ## Arrancar en local
 ```bash
 npm run dev          # ts-node-dev con hot reload, puerto 3000
